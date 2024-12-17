@@ -1,0 +1,18 @@
+Header
+    logo
+    quick create - offer | invoice | shipping | purchase order
+    leave form 
+    language
+    profile
+    theme
+    quick search - future
+
+Sidebar
+    page links
+
+Dashboard
+    leave
+    upcoming project
+    due invoices
+    documents
+    tasks
