@@ -36,6 +36,9 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
 
+    --header-height: 50px;
+    --sidebar-width: 250px;
+
     --xx-background: 0deg 0% 100%;
     --xx-foreground: 0deg 0% 26.27%;
     --xx-primary: 0deg 82.61% 68.43%;
@@ -49,6 +52,7 @@
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
+    --xx-hover-bg: 0deg 5.88% 93.33%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -83,12 +87,13 @@
     --xx-secondary: 241.35deg 82.61% 68.43%;
     --xx-secondary-foreground: var(--xx-foreground);
     --xx-surface: 210deg 1.89% 20.78%;
-    --xx-surface-foreground: var(--xx-foreground);
+    --xx-surface-foreground: 0deg 0% 73.01%;
     --xx-border: 0deg 0% 32.79%;
     --xx-muted: 30deg 3.7% 68.24%;
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
+    --xx-hover-bg: 210deg 5.17% 15.51%;
   }
 }
 
@@ -98,6 +103,11 @@
   }
   body {
     @apply bg-background text-xxbackground-foreground;
-    font-size: 14px;
+    font-size: 13.5px;
+  }
+
+  .thin-scroll {
+    scrollbar-width: thin;
+    /* scrollbar-color: rgba(0, 0, 0, 0.5) transparent; */
   }
 }
