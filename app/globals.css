@@ -45,14 +45,14 @@
     --xx-primary-foreground: var(--xx-foreground);
     --xx-secondary: 241.35deg 82.61% 68.43%;
     --xx-secondary-foreground: var(--xx-foreground);
-    --xx-surface: 60deg 9.09% 97.84%;
+    --xx-surface: 60deg 9.09% 92.84%;
     --xx-surface-foreground: var(--xx-foreground);
-    --xx-border: 0deg 0% 91.37%;
+    --xx-border: 0deg 0% 87.37%;
     --xx-muted: 30deg 3.7% 68.24%;
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
-    --xx-hover-bg: 0deg 5.88% 93.33%;
+    --xx-menu-hover: 0deg 5.88% 84.33%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -93,7 +93,7 @@
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
-    --xx-hover-bg: 210deg 5.17% 15.51%;
+    --xx-menu-hover: 210deg 5.17% 15.51%;
   }
 }
 

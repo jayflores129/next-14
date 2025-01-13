@@ -40,7 +40,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: "hsl(var(--border))",
+        border: "hsl(var(--xx-border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         chart: {
@@ -70,7 +70,7 @@ const config: Config = {
         xxmuted: "hsl(var(--xx-muted))",
         xxsuccess: "hsl(var(--xx-success))",
         xxerror: "hsl(var(--xx-error))",
-        xxhover: "hsl(var(--xx-hover-bg))",
+        xxmenuHover: "hsl(var(--xx-menu-hover))",
       },
       borderRadius: {
         lg: "var(--radius)",

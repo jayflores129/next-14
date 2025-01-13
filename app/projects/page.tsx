@@ -19,8 +19,9 @@ import {
 } from "lucide-react";
 import MainMenus from "@/components/layouts/main-menus";
 import AppCombobox from "@/components/@select/app";
+import List from "./list";
 
-export default async function Home() {
+export default async function Page() {
   return (
     <div>
       <header className="w-full h-[var(--header-height)] flex">
@@ -57,52 +58,11 @@ export default async function Home() {
         </aside>
         <main className="w-[calc(100%-var(--sidebar-width))] h-[calc(100vh-var(--header-height))] overflow-hidden">
           <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll">
-            <div className="px-3 py-1">
+            <div className="px-3 py-2 mb-1">
               <h1 className="text-2xl font-bold">Manage Projects</h1>
             </div>
-            <div className="flex items-center gap-2 px-3">
-              <AppCombobox
-                placeholder="Sort by"
-                options={[
-                  "Project Number",
-                  "Client",
-                  "Description",
-                  "Date",
-                  "Added By",
-                ].map((text: any) => ({ text, id: text }))}
-                className="w-[120px] h-[30px] rounded-sm"
-                popoverContentClassName="max-w-[140px]"
-              />
-              <AppCombobox
-                placeholder="Order By"
-                options={["DESC", "ASC"].map((text: any) => ({
-                  text,
-                  id: String(text).toLowerCase(),
-                }))}
-                className="w-[95px] h-[30px] rounded-sm"
-                popoverContentClassName="max-w-[95px]"
-              />
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <td>Project #</td>
-                  <td>Client</td>
-                  <td>Project Name</td>
-                  <td>Manpower</td>
-                  <td>Date</td>
-                  <td>Start Date</td>
-                  <td>End Date</td>
-                  <td>Delivery Date</td>
-                  <td>Added By</td>
-                  <td>Status</td>
-                  <td>Action</td>
-                </tr>
-              </thead>
-              <tbody>
-                <tr></tr>
-              </tbody>
-            </table>
+
+            <List />
           </div>
         </main>
       </div>
