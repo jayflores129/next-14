@@ -1,11 +1,24 @@
 "use client";
 import { fetchApi } from "@/api.utils";
 import AppCombobox from "@/components/@select/app";
+import DropdownMenu from "@/components/DropdownMenu";
+import Pagination from "@/components/Pagination";
+import StatusChip from "@/components/StatusChip";
+import { Table, TBody, TD, TH, THead } from "@/components/Table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Download, Images, ListFilter } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowRightLeft,
+  Download,
+  FileChartPie,
+  Images,
+  ListFilter,
+  Pencil,
+} from "lucide-react";
 import { useSession } from "next-auth/react";
-import { DebounceInput } from "react-debounce-input";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import useSWR from "swr";
 
 const address = (row: any) => {
@@ -20,13 +33,59 @@ const address = (row: any) => {
   return rows.filter((loc: any) => loc !== null).join(", ");
 };
 
+const sortBy = [
+  {
+    text: "Project Number",
+    id: "number",
+  },
+  {
+    text: "Client",
+    id: "client",
+  },
+  {
+    text: "Description",
+    id: "description",
+  },
+  {
+    text: "Date",
+    id: "date",
+  },
+  {
+    text: "Added By",
+    id: "added_by",
+  },
+];
+
+const orderBy = ["DESC", "ASC"].map((text: any) => ({
+  text,
+  id: text,
+}));
+
 export default function List() {
   const { data: session }: any = useSession();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [search, setSearch] = useState(searchParams.get("search") || "");
 
-  console.log(session?.access_token);
+  const payload = useMemo(() => {
+    const _payload: any = {};
+
+    _payload.page = searchParams.get("page") || 1;
+
+    for (let [key, value] of searchParams) {
+      if (value) _payload[key] = value;
+    }
+
+    return _payload;
+  }, [searchParams]);
 
   const { data, isLoading, error, mutate } = useSWR(
-    [session?.access_token && `/api/projects`, session?.access_token],
+    [
+      session?.access_token &&
+        `/api/projects?${new URLSearchParams(payload).toString()}`,
+      session?.access_token,
+    ],
     fetchApi,
     {
       revalidateOnFocus: false,
@@ -34,30 +93,72 @@ export default function List() {
     }
   );
 
+  const sortValue = useMemo(() => {
+    const values: any = {};
+
+    if (searchParams.get("arrange")) {
+      const sort = sortBy?.find(
+        (item: any) => item.id == searchParams.get("arrange")
+      );
+      values.sort = sort;
+    }
+
+    if (searchParams.get("sort")) {
+      const order = orderBy?.find(
+        (item: any) => item.id == searchParams.get("sort")
+      );
+      values.order = order;
+    }
+
+    return values;
+  }, [searchParams]);
+
+  const onPaginate = (_page: any) => {
+    const _searchParams = new URLSearchParams(searchParams.toString());
+    _searchParams.set("page", _page);
+    const href = `${pathname}?${_searchParams.toString()}`;
+    router.push(href);
+  };
+
+  const onSearch = (searchValue: any) => {
+    const _searchParams = new URLSearchParams({ search: searchValue });
+    const href = `${pathname}?${_searchParams.toString()}`;
+    router.push(href);
+  };
+
+  const onSort = (sortBy?: any, orderBy?: any) => {
+    const _searchParams = new URLSearchParams(searchParams.toString());
+
+    _searchParams.set("arrange", sortBy);
+    _searchParams.set("sort", orderBy);
+
+    const href = `${pathname}?${_searchParams.toString()}`;
+    router.push(href);
+  };
+
   return (
     <>
       <div className="flex items-center justify-between pe-2 mb-3">
         <div className="flex items-center gap-2 px-3">
           <AppCombobox
             placeholder="Sort by"
-            options={[
-              "Project Number",
-              "Client",
-              "Description",
-              "Date",
-              "Added By",
-            ].map((text: any) => ({ text, id: text }))}
-            className="w-[120px] h-[30px] rounded-md bg-transparent border"
+            options={sortBy}
+            className="w-[140px] h-[30px] rounded-md bg-transparent border"
             popoverContentClassName="max-w-[140px]"
+            onChangeItem={(item) =>
+              onSort(item?.id || "", searchParams.get("sort"))
+            }
+            value={sortValue?.sort}
           />
           <AppCombobox
             placeholder="Order By"
-            options={["DESC", "ASC"].map((text: any) => ({
-              text,
-              id: String(text).toLowerCase(),
-            }))}
+            options={orderBy}
             className="w-[95px] h-[30px] rounded-md bg-transparent border"
             popoverContentClassName="max-w-[95px]"
+            onChangeItem={(item) =>
+              onSort(searchParams.get("arrange"), item?.id || "")
+            }
+            value={sortValue?.order}
           />
           <Button className="h-[30px]" variant={"outline"}>
             <ListFilter width={20} height={20} />
@@ -78,75 +179,101 @@ export default function List() {
             type="search"
             className="h-[34px] w-[300px]"
             placeholder="Search"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              onSearch(e.target.value);
+            }}
+            debounceTimeout={300}
           />
         </div>
       </div>
-      <table className="w-full text-xxsurface-foreground">
-        <thead className="bg-xxsurface/50">
+      <Table>
+        <THead>
           <tr>
-            <td className="py-1 px-2 text-[0.9em] font-medium ps-4">
-              Project #
-            </td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Client</td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Project Name</td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Manpower</td>
-            <td className="py-1 px-2 text-[0.9em] font-medium w-[100px]">
-              Date
-            </td>
-            <td className="py-1 px-2 text-[0.9em] font-medium w-[100px]">
-              Start Date
-            </td>
-            <td className="py-1 px-2 text-[0.9em] font-medium w-[100px]">
-              End Date
-            </td>
-            <td className="py-1 px-2 text-[0.9em] font-medium w-[100px]">
-              Delivery Date
-            </td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Added By</td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Status</td>
-            <td className="py-1 px-2 text-[0.9em] font-medium">Action</td>
+            <TH className="font-medium ps-4">Project #</TH>
+            <TH className="font-medium">Client</TH>
+            <TH className="font-medium">Project Name</TH>
+            <TH className="font-medium">Manpower</TH>
+            <TH className="font-medium w-[100px]">Date</TH>
+            <TH className="font-medium w-[100px]">Start Date</TH>
+            <TH className="font-medium w-[100px]">End Date</TH>
+            <TH className="font-medium w-[100px]">Delivery Date</TH>
+            <TH className="font-medium">Added By</TH>
+            <TH className="font-medium">Status</TH>
+            <TH className="font-medium pe-4 text-right">Action</TH>
           </tr>
-        </thead>
-        <tbody>
+        </THead>
+        <TBody>
           {Array.isArray(data?.projects) &&
             data.projects.map((proj: any, key: number) => (
-              <tr key={key} className="border-b last:border-b-0">
-                <td className="py-2  px-2 text-blue-600 font-medium ps-4 align-top">
+              <tr
+                key={key}
+                className="border-b border-xxtableBorder hover:bg-xxtableHover"
+              >
+                <TD className="text-blue-700 font-medium ps-4">
                   {proj.project_number}
-                </td>
-                <td className="py-2 px-2 align-top">
+                </TD>
+                <TD>
                   <div className="flex flex-col gap-1">
                     <span className="font-medium">{proj.cms_name}</span>
-                    <span title={address(proj)} className="">
-                      {address(proj)}
-                    </span>
+                    <span title={address(proj)}>{address(proj)}</span>
                   </div>
-                </td>
-                <td className="py-2 px-2 font-medium align-top">
-                  {proj.project_name}
-                </td>
-                <td className="py-2 px-2 align-top">
-                  {proj.project_man_power}
-                </td>
-                <td className="py-2 px-2 align-top">{proj.added_date}</td>
-                <td className="py-2 px-2 align-top">
-                  {proj.project_start_date}
-                </td>
-                <td className="py-2 px-2 align-top">{proj.project_end_date}</td>
-                <td className="py-2 px-2 align-top">
-                  {proj.project_delivery_date}
-                </td>
-                <td className="py-2 px-2 align-top">
+                </TD>
+                <TD className="font-medium">{proj.project_name}</TD>
+                <TD>{proj.project_man_power}</TD>
+                <TD>{proj.added_date}</TD>
+                <TD>{proj.project_start_date}</TD>
+                <TD>{proj.project_end_date}</TD>
+                <TD>{proj.project_delivery_date}</TD>
+                <TD>
                   {proj.user_firstname} {proj.user_lastname}
-                </td>
-                <td className="py-2 px-2 align-top">
-                  {proj.project_type_status}
-                </td>
-                <td className="py-2 px-2 align-top"></td>
+                </TD>
+                <TD>
+                  <StatusChip status={proj.project_status} />
+                </TD>
+                <TD className="pe-4 text-right">
+                  <DropdownMenu
+                    menus={[
+                      {
+                        text: "View",
+                        Icon: ArrowRight,
+                        href: "https://hotware.app/projects",
+                        target: "_blank",
+                      },
+                      null,
+                      {
+                        text: "Update",
+                        Icon: Pencil,
+                        href: "/",
+                      },
+                      {
+                        text: "Create Shipping List",
+                        Icon: FileChartPie,
+                        href: "/",
+                      },
+                      {
+                        text: "Change Status",
+                        Icon: ArrowRightLeft,
+                        href: "/",
+                      },
+                    ]}
+                  />
+                </TD>
               </tr>
             ))}
-        </tbody>
-      </table>
+        </TBody>
+      </Table>
+      <div className="flex items-center justify-between ps-4 py-2 mt-auto">
+        <p className="text-xxsecondary-foreground">
+          Total: {data?.total_list} items
+        </p>
+        <Pagination
+          pager={data?.pager}
+          onPaginate={onPaginate}
+          currPage={payload.page}
+        />
+      </div>
     </>
   );
 }

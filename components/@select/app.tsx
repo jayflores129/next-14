@@ -115,7 +115,7 @@ const AppCombobox = ({
         ) : (
           <div
             className={cn(
-              "text-left hover:bg-xxmenuHover/50 dark:hover:bg-xxmenuHover px-2.5 py-1.5 w-full transition-[border] duration-100 flex items-center justify-between outline-none cursor-pointer rounded-md"
+              "text-left hover:bg-xxmenuHover/50 dark:hover:bg-xxmenuHover px-2 py-1.5 w-full transition-[border] duration-100 flex items-center justify-between outline-none cursor-pointer rounded-md"
             )}
           >
             <div className="flex items-center gap-2">
@@ -163,7 +163,7 @@ const AppCombobox = ({
         className={cn(
           "flex items-center w-full bg-xxsurface rounded-md overflow-hidden h-[35px] !p-0",
           outlined &&
-            "focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+            "focus-within:outline-none focus-within:ring-1 focus-within:ring-ring",
           className,
           formError && "ring-2 ring-ring ring-offset-2 ring-red-300"
         )}
@@ -238,7 +238,7 @@ const AppCombobox = ({
             align="start"
             onOpenAutoFocus={(e) => e.preventDefault()}
             className={cn(
-              "rounded-md p-1.5 thin-scroll max-h-[400px] overflow-auto border-xxborder shadow",
+              "rounded-md p-1 thin-scroll max-h-[400px] overflow-auto border-xxborder shadow",
               popoverContentClassName
             )}
             style={{ minWidth: triggerWidth + "px" }}

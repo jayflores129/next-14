@@ -71,6 +71,8 @@ const config: Config = {
         xxsuccess: "hsl(var(--xx-success))",
         xxerror: "hsl(var(--xx-error))",
         xxmenuHover: "hsl(var(--xx-menu-hover))",
+        xxtableBorder: "hsl(var(--table-border))",
+        xxtableHover: "hsl(var(--table-hover))",
       },
       borderRadius: {
         lg: "var(--radius)",

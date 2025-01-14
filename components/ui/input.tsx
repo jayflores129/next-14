@@ -1,22 +1,32 @@
 import * as React from "react";
-
+import { DebounceInput as DebounceInputDefault } from "react-debounce-input";
 import { cn } from "@/lib/utils";
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+const Input = React.forwardRef<
+  HTMLInputElement,
+  React.ComponentProps<"input"> & {
+    debounceTimeout?: number;
+  }
+>(({ className, type, debounceTimeout = 0, ...props }, ref) => {
+  const _className = cn(
+    "flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-stone-950 placeholder:text-stone-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-950 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:file:text-stone-50 dark:placeholder:text-stone-400 dark:focus-visible:ring-stone-300",
+    className
+  );
+
+  if (debounceTimeout > 0) {
     return (
-      <input
+      <DebounceInputDefault
         type={type}
-        className={cn(
-          "flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-stone-950 placeholder:text-stone-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-stone-950 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:file:text-stone-50 dark:placeholder:text-stone-400 dark:focus-visible:ring-stone-300",
-          className
-        )}
-        ref={ref}
-        {...props}
+        className={_className}
+        inputRef={ref as any}
+        debounceTimeout={debounceTimeout}
+        {...(props as any)}
       />
     );
   }
-);
+
+  return <input type={type} className={_className} ref={ref} {...props} />;
+});
 Input.displayName = "Input";
 
 export { Input };

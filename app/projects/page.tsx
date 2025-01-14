@@ -1,25 +1,7 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
-  ChevronsUpDown,
-  FolderKanban,
-  Globe,
-  House,
-  Info,
-  Languages,
-  Menu,
-  Plus,
-  SunMoon,
-} from "lucide-react";
+import { ChevronsUpDown, Languages, Menu, Plus, SunMoon } from "lucide-react";
 import MainMenus from "@/components/layouts/main-menus";
-import AppCombobox from "@/components/@select/app";
 import List from "./list";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Page() {
   return (
@@ -53,11 +35,11 @@ export default async function Page() {
         </div>
       </header>
       <div className="flex">
-        <aside className="h-[calc(100vh-var(--header-height))] overflow-auto w-[var(--sidebar-width)] thin-scroll">
+        <ScrollArea className="h-[calc(100vh-var(--header-height))] overflow-auto w-[var(--sidebar-width)] thin-scroll">
           <MainMenus />
-        </aside>
+        </ScrollArea>
         <main className="w-[calc(100%-var(--sidebar-width))] h-[calc(100vh-var(--header-height))] overflow-hidden rounded-tl-lg">
-          <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll">
+          <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll flex flex-col">
             <div className="px-3 py-2 mb-1">
               <h1 className="text-2xl font-bold">Manage Projects</h1>
             </div>
