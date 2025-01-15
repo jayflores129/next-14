@@ -19,12 +19,13 @@ import {
   SunMoon,
 } from "lucide-react";
 import MainMenus from "@/components/layouts/main-menus";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Home() {
   return (
     <div>
-      <header className="w-full bg-xxbackground h-[var(--header-height)] border-b border-xxborder flex">
-        <div className="w-[var(--sidebar-width)] border-r h-full flex items-center px-4">
+      <header className="w-full bg-xxsurface h-[var(--header-height)] border-b border-xxborder flex">
+        <div className="w-[var(--sidebar-width)] border-r border-xxborder h-full flex items-center px-4">
           <img src="https://localhost:3000/logos/main-logo-black.svg" />
         </div>
         <div className="flex h-full items-center px-2">
@@ -49,10 +50,10 @@ export default async function Home() {
         </div>
       </header>
       <div className="flex">
-        <aside className="bg-xxbackground border-r border-xxborder h-[calc(100vh-var(--header-height))] overflow-auto w-[var(--sidebar-width)] thin-scroll">
+        <ScrollArea className="bg-xxsurface border-r border-xxborder h-[calc(100vh-var(--header-height))] overflow-auto w-[var(--sidebar-width)] thin-scroll">
           <MainMenus />
-        </aside>
-        <main className="bg-xxsurface w-[calc(100%-var(--sidebar-width))] h-[calc(100vh-var(--header-height))] overflow-auto thin-scroll">
+        </ScrollArea>
+        <main className="bg-xxbackground w-[calc(100%-var(--sidebar-width))] h-[calc(100vh-var(--header-height))] overflow-auto thin-scroll">
           <h1 className="text-2xl font-bold">Projects</h1>
           {/* <table className="w-full">
             <thead>
