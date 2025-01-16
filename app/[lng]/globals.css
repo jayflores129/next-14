@@ -45,14 +45,19 @@
     --xx-primary-foreground: var(--xx-foreground);
     --xx-secondary: 241.35deg 82.61% 68.43%;
     --xx-secondary-foreground: var(--xx-foreground);
-    --xx-surface: 60deg 9.09% 97.84%;
+    --xx-surface: 60deg 9.09% 92.84%;
     --xx-surface-foreground: var(--xx-foreground);
-    --xx-border: 0deg 0% 92.92%;
+    --xx-border: 0deg 0% 87.37%;
     --xx-muted: 30deg 3.7% 68.24%;
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
-    --xx-hover-bg: 0deg 5.88% 93.33%;
+    --xx-menu-hover: 0deg 5.88% 84.33%;
+    --table-border: 0deg 0% 95.28%;
+    --table-hover: 0deg 0% 98.82%;
+
+    --scrollbar-thumb-color: #c1c1c1;
+    --scrollbar-track-color: #f1f1f1;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -93,7 +98,12 @@
     --xx-error: 0deg 58.72% 57.25%;
     --xx-success: 151.58deg 38.78% 48.04%;
     --xx-warning: 33.47deg 38.78% 48.04%;
-    --xx-hover-bg: 210deg 5.17% 15.51%;
+    --xx-menu-hover: 210deg 5.17% 15.51%;
+    --table-border: 220deg 2.64% 18.9%;
+    --table-hover: 220deg 4.11% 14.31%;
+
+    --scrollbar-thumb-color: #444;
+    --scrollbar-track-color: #222;
   }
 }
 
@@ -108,6 +118,13 @@
 
   .thin-scroll {
     scrollbar-width: thin;
-    /* scrollbar-color: rgba(0, 0, 0, 0.5) transparent; */
+  }
+
+  .thin-scroll::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-color);
+  }
+
+  .thin-scroll::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-color);
   }
 }
