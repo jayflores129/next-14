@@ -1,9 +1,13 @@
+"use client";
+
+import { useTranslation } from "@/app/i18n/client";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { iconStrokeWidth } from "@/lib/utils";
 import {
   BookCheck,
   BookDashed,
@@ -39,7 +43,7 @@ import {
 const iconProps = {
   width: 16,
   height: 16,
-  strokeWidth: 2,
+  strokeWidth: iconStrokeWidth,
 };
 
 const subIconProps = {
@@ -49,63 +53,65 @@ const subIconProps = {
 };
 
 export default function MainMenus() {
+  const { t } = useTranslation();
+
   const dashboard = {
-    name: "Dashboard",
+    name: t("Dashboard"),
     icon: <House {...iconProps} />,
     href: "/",
     condition: true,
   };
 
   const project_overview = {
-    name: "Overview",
+    name: t(t("Overview")),
     icon: <Info {...iconProps} />,
     condition: true,
   };
 
   const project_offer = {
-    name: "Offer",
+    name: t("Offers"),
     icon: <FolderDot {...iconProps} />,
     condition: true,
   };
 
   const project_order_confirmation = {
-    name: "Order Confirmation",
+    name: t("OrderConfirmations"),
     icon: <FolderCheck {...iconProps} />,
     condition: true,
   };
 
   const project_delivery_note = {
-    name: "Delivery Notes",
+    name: t("DeliveryNotes"),
     icon: <Truck {...iconProps} />,
     condition: true,
   };
 
   const project_invoice = {
-    name: "Invoices",
+    name: t("Invoices"),
     icon: <ScrollText {...iconProps} />,
     condition: true,
   };
 
   const project_credit_note = {
-    name: "Credit Notes",
+    name: t("CreditNotes"),
     icon: <BookCheck {...iconProps} />,
     condition: true,
   };
 
   const loadingListOverview = {
-    name: "Overview",
+    name: t("Overview"),
     icon: <Info {...subIconProps} />,
     condition: true,
   };
 
   const loadingListTemplate = {
-    name: "Template",
+    name: t("Template"),
     icon: <BookDashed {...subIconProps} />,
     condition: true,
   };
 
   const loadingList = {
-    name: "Loading List",
+    name: t("LoadingList"),
     icon: <ListOrdered {...iconProps} />,
     condition: true,
     value: "project_loading_list",
@@ -113,13 +119,13 @@ export default function MainMenus() {
   };
 
   const project_shipping = {
-    name: "Shipping List",
+    name: t("ShippingList"),
     icon: <ShoppingCart {...iconProps} />,
     condition: true,
   };
 
   const project = {
-    name: "Projects",
+    name: t("Projects"),
     icon: <FolderKanban {...iconProps} />,
     value: "project",
     condition: true,
@@ -136,19 +142,19 @@ export default function MainMenus() {
   };
 
   const address_managerOverview = {
-    name: "Overview",
+    name: t("Overview"),
     icon: <Info {...subIconProps} />,
     condition: true,
   };
 
   const address_managerUnAssignedReport = {
-    name: "Template",
+    name: t("Template"),
     icon: <FlagTriangleLeft {...subIconProps} />,
     condition: true,
   };
 
   const address_manager = {
-    name: "Address Manager",
+    name: t("AddressManager"),
     icon: <Contact {...iconProps} />,
     condition: true,
     value: "address_manager",
@@ -156,31 +162,31 @@ export default function MainMenus() {
   };
 
   const document_company = {
-    name: "Company",
+    name: t("Company"),
     icon: <Contact {...subIconProps} />,
     condition: true,
   };
 
   const document_employee = {
-    name: "Employees",
+    name: t("Employees"),
     icon: <Users {...subIconProps} />,
     condition: true,
   };
 
   const document_equipments = {
-    name: "Equipments",
+    name: t("Equipments"),
     icon: <LayoutList {...subIconProps} />,
     condition: true,
   };
 
   const document_my_documents = {
-    name: "My Documents",
+    name: t("MyDocuments"),
     icon: <Folder {...subIconProps} />,
     condition: true,
   };
 
   const documents = {
-    name: "Documents",
+    name: t("Documents"),
     icon: <Contact {...subIconProps} />,
     condition: true,
     value: "documents",
@@ -193,19 +199,19 @@ export default function MainMenus() {
   };
 
   const item_overview = {
-    name: "Overview",
+    name: t("Overview"),
     icon: <Info {...subIconProps} />,
     condition: true,
   };
 
   const item_set = {
-    name: "Set",
+    name: t("Set"),
     icon: <FilePenLine {...subIconProps} />,
     condition: true,
   };
 
   const items = {
-    name: "Items",
+    name: t("Items"),
     icon: <Layers {...iconProps} />,
     condition: true,
     value: "items",
@@ -213,61 +219,61 @@ export default function MainMenus() {
   };
 
   const purchase_order = {
-    name: "Purchase Order",
+    name: t("PurchaseOrder"),
     icon: <ListCheck {...iconProps} />,
     condition: true,
   };
 
   const working_hours = {
-    name: "Working Hours",
+    name: t("Working Hours"),
     icon: <Calendar {...iconProps} />,
     condition: true,
   };
 
   const tutorials = {
-    name: "Tutorials",
+    name: t("Tutorials"),
     icon: <BookCheck {...iconProps} />,
     condition: true,
   };
 
   const settings = {
-    name: "Settings",
+    name: t("Settings"),
     icon: <Cog {...iconProps} />,
     condition: true,
   };
 
   const admin_user = {
-    name: "Users",
+    name: t("Users"),
     icon: <User {...subIconProps} />,
     condition: true,
   };
 
   const admin_company_overview = {
-    name: "Overview",
+    name: t("Overview"),
     icon: <User {...subIconProps} />,
     condition: true,
   };
 
   const admin_company_automated_letters = {
-    name: "Automated Letters",
+    name: t("AutomatedLetters"),
     icon: <MailCheck {...subIconProps} />,
     condition: true,
   };
 
   const admin_company_letter_signatories = {
-    name: "Letter Signatories",
+    name: t("LetterSignatories"),
     icon: <Pen {...subIconProps} />,
     condition: true,
   };
 
   const admin_company_letter_categories = {
-    name: "Letter Categories",
+    name: t("LetterCategories"),
     icon: <MailCheck {...subIconProps} />,
     condition: true,
   };
 
   const admin_company = {
-    name: "Company",
+    name: t("Company"),
     icon: <Building {...subIconProps} />,
     value: "admin_company",
     condition: true,
@@ -280,31 +286,31 @@ export default function MainMenus() {
   };
 
   const admin_warehouse = {
-    name: "Warehouse",
+    name: t("Warehouse"),
     icon: <Warehouse {...subIconProps} />,
     condition: true,
   };
 
   const admin_leave = {
-    name: "Leave",
+    name: t("Leave"),
     icon: <CalendarX {...subIconProps} />,
     condition: true,
   };
 
   const admin_car = {
-    name: "Leave",
+    name: t("Car"),
     icon: <Car {...subIconProps} />,
     condition: true,
   };
 
   const admin_pipe_sizing = {
-    name: "Pipe Sizing",
+    name: t("PipeSizing"),
     icon: <Pipette {...subIconProps} />,
     condition: true,
   };
 
   const admin = {
-    name: "Admin",
+    name: t("Admin"),
     icon: <MailCheck {...subIconProps} />,
     condition: true,
     value: "admin",
@@ -357,6 +363,7 @@ export default function MainMenus() {
                             type="single"
                             collapsible
                             className="p-0 flex flex-col gap-1"
+                            key={subKey}
                           >
                             <AccordionItem
                               value={subLink.value}

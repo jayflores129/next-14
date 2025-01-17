@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import i18next from "i18next";
 import {
   initReactI18next,
@@ -13,7 +13,6 @@ import { getOptions, languages, cookieName } from "./settings";
 
 const runsOnServerSide = typeof window === "undefined";
 
-//
 i18next
   .use(initReactI18next)
   .use(LanguageDetector)
@@ -25,37 +24,32 @@ i18next
   )
   .init({
     ...getOptions(),
-    lng: undefined, // let detect the language on client side
+    lng: undefined,
     detection: {
       order: ["path", "htmlTag", "cookie", "navigator"],
     },
     preload: runsOnServerSide ? languages : [],
   });
 
-export function useTranslation(lng: any, ns = "common", options?: any) {
-  const [cookies, setCookie] = useCookies([cookieName]);
+export function useTranslation(ns = "common", options?: any) {
   const ret = useTranslationOrg(ns, options);
   const { i18n } = ret;
-  if (runsOnServerSide && lng && i18n.resolvedLanguage !== lng) {
-    i18n.changeLanguage(lng);
-  } else {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      if (activeLng === i18n.resolvedLanguage) return;
-      setActiveLng(i18n.resolvedLanguage);
-    }, [activeLng, i18n.resolvedLanguage]);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      if (!lng || i18n.resolvedLanguage === lng) return;
-      i18n.changeLanguage(lng);
-    }, [lng, i18n]);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      if (cookies.i18next === lng) return;
-      setCookie(cookieName, lng, { path: "/" });
-    }, [lng, cookies.i18next]);
-  }
+
+  if (runsOnServerSide) return ret;
+
+  const _lang = useMemo(() => {
+    let _lang = "en";
+    const html = document.querySelector("html");
+    const appLang = html?.getAttribute("lang");
+
+    if (appLang) _lang = appLang;
+
+    return _lang;
+  }, []);
+
+  useEffect(() => {
+    i18n.changeLanguage(_lang);
+  }, [_lang]);
+
   return ret;
 }

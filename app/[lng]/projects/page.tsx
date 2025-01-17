@@ -10,6 +10,7 @@ export default async function Page({
   params: { lng: any };
 }) {
   const { t } = await useTranslation(lng);
+
   return (
     <div>
       <header className="w-full h-[var(--header-height)] flex">
@@ -44,12 +45,12 @@ export default async function Page({
         <ScrollArea className="h-[calc(100vh-var(--header-height))] overflow-auto w-[var(--sidebar-width)] thin-scroll">
           <MainMenus />
         </ScrollArea>
-        <main className="w-[calc(100%-var(--sidebar-width))] h-[calc(100vh-var(--header-height))] overflow-hidden rounded-tl-lg">
-          <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll flex flex-col">
-            <div className="px-3 py-2 mb-1">
+        <main className="w-[calc(100%-var(--sidebar-width))] overflow-hidden rounded-tl-lg">
+          <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll flex flex-col shadow">
+            <div className="px-3 py-4 mb-1">
               <h1 className="text-2xl font-bold">{t("ManageProjects")}</h1>
             </div>
-            <List lng={lng} />
+            <List />
           </div>
         </main>
       </div>

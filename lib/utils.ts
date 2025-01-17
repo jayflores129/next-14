@@ -5,6 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const iconStrokeWidth = 2;
+
 export const ACTIVE = "active";
 export const SHIPPED = "shipped";
 export const RETURNED = "returned";

@@ -23,6 +23,7 @@ import { useMemo, useState } from "react";
 import useSWR from "swr";
 
 import FilterButton from "./FilterButton";
+import { iconStrokeWidth } from "@/lib/utils";
 
 const address = (row: any) => {
   let rows = [
@@ -36,41 +37,43 @@ const address = (row: any) => {
   return rows.filter((loc: any) => loc !== null).join(", ");
 };
 
-const sortBy = [
-  {
-    text: "Project Number",
-    id: "number",
-  },
-  {
-    text: "Client",
-    id: "client",
-  },
-  {
-    text: "Description",
-    id: "description",
-  },
-  {
-    text: "Date",
-    id: "date",
-  },
-  {
-    text: "Added By",
-    id: "added_by",
-  },
-];
-
 const orderBy = ["DESC", "ASC"].map((text: any) => ({
   text,
   id: text,
 }));
 
-export default function List({ lng }: { lng: any }) {
+export default function List() {
   const { data: session }: any = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const { t } = useTranslation(lng);
+  const { t } = useTranslation();
+
+  const sortBy = useMemo(() => {
+    return [
+      {
+        text: t("Project") + " #",
+        id: "number",
+      },
+      {
+        text: t("Client"),
+        id: "client",
+      },
+      {
+        text: t("Description"),
+        id: "description",
+      },
+      {
+        text: t("Date"),
+        id: "date",
+      },
+      {
+        text: t("AddedBy"),
+        id: "added_by",
+      },
+    ];
+  }, [t]);
 
   const payload = useMemo(() => {
     const _payload: any = {};
@@ -155,7 +158,7 @@ export default function List({ lng }: { lng: any }) {
             value={sortValue?.sort}
           />
           <AppCombobox
-            placeholder={t("Order By")}
+            placeholder={t("OrderBy")}
             options={orderBy}
             className="w-[95px] h-[30px]"
             popoverContentClassName="max-w-[95px]"
@@ -168,11 +171,11 @@ export default function List({ lng }: { lng: any }) {
 
           <div className="bg-xxborder w-[1px] h-[20px]" />
           <Button className="h-[30px]">
-            <Download width={20} height={20} />
+            <Download width={20} height={20} strokeWidth={iconStrokeWidth} />
             <span>{t("Export")}</span>
           </Button>
           <Button className="h-[30px]" variant="secondary">
-            <Images width={20} height={20} />
+            <Images width={20} height={20} strokeWidth={iconStrokeWidth} />
             <span>{t("Gallery")}</span>
           </Button>
         </div>

@@ -3,11 +3,10 @@ import {
   DropdownMenu as DropdownMenuPrimitive,
   DropdownMenuContent as DropdownMenuContentPrimitive,
   DropdownMenuItem as DropdownMenuItemPrimitive,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn, iconStrokeWidth } from "@/lib/utils";
 import { Ellipsis, EllipsisVertical } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -68,7 +67,7 @@ export default function DropdownMenu({
                 key={key}
                 width={16}
                 height={16}
-                strokeWidth={1.5}
+                strokeWidth={iconStrokeWidth}
                 className={cn("text-xxsurface-foreground", menu.iconClassName)}
               />
             );

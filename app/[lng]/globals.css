@@ -41,9 +41,9 @@
 
     --xx-background: 0deg 0% 100%;
     --xx-foreground: 0deg 0% 26.27%;
-    --xx-primary: 0deg 82.61% 68.43%;
+    --xx-primary: 0deg 83.54% 62.16%;
     --xx-primary-foreground: var(--xx-foreground);
-    --xx-secondary: 241.35deg 82.61% 68.43%;
+    --xx-secondary: 0deg 8.29% 39%;
     --xx-secondary-foreground: var(--xx-foreground);
     --xx-surface: 60deg 9.09% 92.84%;
     --xx-surface-foreground: var(--xx-foreground);
@@ -87,9 +87,9 @@
 
     --xx-background: 220deg 4.76% 12.35%;
     --xx-foreground: 30deg 9.09% 95.69%;
-    --xx-primary: 0deg 82.61% 68.43%;
+    --xx-primary: 0deg 83.54% 62.16%;
     --xx-primary-foreground: var(--xx-foreground);
-    --xx-secondary: 241.35deg 82.61% 68.43%;
+    --xx-secondary: 0deg 8.29% 39%;
     --xx-secondary-foreground: var(--xx-foreground);
     --xx-surface: 210deg 1.89% 20.78%;
     --xx-surface-foreground: 0deg 0% 73.01%;
