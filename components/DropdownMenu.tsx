@@ -19,6 +19,7 @@ type Menu = {
   download?: React.ComponentProps<typeof Link>["download"];
   target?: React.ComponentProps<typeof Link>["target"];
   iconClassName?: string;
+  active?: boolean;
 } | null;
 
 export default function DropdownMenu({
@@ -30,6 +31,7 @@ export default function DropdownMenu({
   defaultOpen,
   modal = false,
   menus,
+  align = "end",
   ...props
 }: React.ComponentProps<typeof DropdownMenuContentPrimitive> & {
   trigger?: React.ReactNode;
@@ -59,7 +61,7 @@ export default function DropdownMenu({
           </button>
         )}
       </DropdownMenuTrigger>
-      <DropdownMenuContentPrimitive align="end">
+      <DropdownMenuContentPrimitive align={align} {...props}>
         {Array.isArray(menus) &&
           menus.map((menu: Menu, key: number) => {
             const icon = menu?.Icon && (
@@ -78,7 +80,7 @@ export default function DropdownMenu({
 
             return (
               <DropdownMenuItemPrimitive
-                className="rounded-md py-1.5"
+                className={cn("rounded-md py-1.5")}
                 asChild={menu?.href ? true : false}
                 key={key}
               >
