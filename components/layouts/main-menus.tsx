@@ -44,6 +44,7 @@ const iconProps = {
   width: 16,
   height: 16,
   strokeWidth: iconStrokeWidth,
+  style: { marginTop: "4px" },
 };
 
 const subIconProps = {
@@ -349,7 +350,7 @@ export default function MainMenus() {
                 className="border-b-0"
               >
                 <AccordionTrigger className="text-xxsurface-foreground rounded-md p-2 font-normal data-[state=open]:font-medium data-[state=closed]:hover:bg-xxmenuHover data-[state=open]:rounded-b-none hover:no-underline">
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-start gap-2">
                     {link.icon}
                     {link.name}
                   </span>
@@ -370,7 +371,7 @@ export default function MainMenus() {
                               className="border-b-0"
                             >
                               <AccordionTrigger className="rounded-md text-xxsurface-foreground p-2 font-normal data-[state=open]:font-medium data-[state=closed]:hover:bg-xxmenuHover data-[state=open]:rounded-b-none hover:no-underline">
-                                <span className="flex items-center gap-2 ">
+                                <span className="flex items-start gap-2 ">
                                   {subLink.icon}
                                   {subLink.name}
                                 </span>
@@ -381,7 +382,7 @@ export default function MainMenus() {
                                     (sub2: any, sub2Key: number) => (
                                       <a
                                         href="#"
-                                        className="hover:bg-xxmenuHover flex items-center gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
+                                        className="hover:bg-xxmenuHover flex items-start gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
                                         key={sub2Key}
                                       >
                                         {sub2.icon}
@@ -397,7 +398,7 @@ export default function MainMenus() {
                       return (
                         <a
                           href="#"
-                          className="hover:bg-xxmenuHover flex items-center gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
+                          className="hover:bg-xxmenuHover flex items-start gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
                           key={subKey}
                         >
                           {subLink.icon}
@@ -414,7 +415,7 @@ export default function MainMenus() {
             <a
               key={key}
               href="#"
-              className="hover:bg-xxmenuHover flex items-center gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
+              className="hover:bg-xxmenuHover flex items-start gap-2 p-2 rounded-md text-sm text-xxsurface-foreground"
             >
               {link.icon}
               <span>{link.name}</span>
