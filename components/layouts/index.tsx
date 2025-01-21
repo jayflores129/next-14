@@ -56,6 +56,7 @@ export default function MainLayout({ title, children }: MainLayout) {
   const mainElemStyle = useMemo(() => {
     const style: any = {
       width: `calc(100% - ${sidebarWidth}px)`,
+      marginLeft: "auto",
     };
     if (wrapperSize?.width <= 1300) {
       return {
@@ -76,7 +77,7 @@ export default function MainLayout({ title, children }: MainLayout) {
     <>
       <Sheet onOpenChange={setSidebarSheet} open={sidebarSheet}>
         <SheetContent
-          className="w-[250px] bg-xxsurface p-0"
+          className="w-[250px] bg-xxsurface dark:bg-xxsurface p-0 border-0"
           side="left"
           useDefaultCloseButton={false}
         >
@@ -157,7 +158,7 @@ export default function MainLayout({ title, children }: MainLayout) {
             </ScrollArea>
           )}
           <main
-            className="overflow-hidden rounded-tl-lg transition-all duration-200"
+            className="overflow-hidden rounded-tl-lg transition-[margin] duration-200"
             style={mainElemStyle}
           >
             <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll flex flex-col shadow">
