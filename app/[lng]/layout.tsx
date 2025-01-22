@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { languages } from "../i18n/settings";
+import { cookies } from "next/headers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,15 +27,20 @@ export async function generateStaticParams() {
 
 export default function RootLayout({
   children,
-  params: { lng },
+  params: { lng, ...params },
 }: Readonly<{
   children: React.ReactNode;
   params: { lng: string };
 }>) {
+  const cookieStore = cookies();
+  const theme = cookieStore.get("theme");
+
+  const themeValue = theme?.value || "";
+
   return (
     <html lang={lng}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-xxsurface dark antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${themeValue} bg-xxsurface antialiased`}
       >
         <SessionProvider>{children}</SessionProvider>
       </body>

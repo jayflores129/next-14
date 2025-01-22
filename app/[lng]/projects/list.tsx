@@ -145,8 +145,21 @@ export default function List() {
 
   return (
     <>
-      <div className="flex items-center justify-between pe-2 mb-3">
-        <div className="flex items-center gap-2 px-3">
+      <div className="flex items-center justify-between px-3 mb-3">
+        <div>
+          <Input
+            type="search"
+            className="h-[34px] w-[300px]"
+            placeholder={t("Search")}
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              onSearch(e.target.value);
+            }}
+            debounceTimeout={300}
+          />
+        </div>
+        <div className="flex items-center gap-2">
           <AppCombobox
             placeholder={t("SortBy")}
             options={sortBy}
@@ -178,19 +191,6 @@ export default function List() {
             <Images width={20} height={20} strokeWidth={iconStrokeWidth} />
             <span>{t("Gallery")}</span>
           </Button>
-        </div>
-        <div>
-          <Input
-            type="search"
-            className="h-[34px] w-[300px]"
-            placeholder={t("Search")}
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              onSearch(e.target.value);
-            }}
-            debounceTimeout={300}
-          />
         </div>
       </div>
       <Table>

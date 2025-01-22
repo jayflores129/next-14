@@ -12,7 +12,7 @@ import Link from "next/link";
 import React from "react";
 
 type Menu = {
-  text?: string;
+  text?: React.ReactNode;
   Icon?: React.ComponentType<any>;
   onClick?: () => void;
   href?: React.ComponentProps<typeof Link>["href"];
@@ -74,15 +74,18 @@ export default function DropdownMenu({
               />
             );
 
-            const className = cn("flex items-center gap-2 cursor-pointer");
+            const className = cn("flex items-center gap-2");
 
             if (!menu) return <DropdownMenuSeparator key={key} />;
 
             return (
               <DropdownMenuItemPrimitive
-                className={cn("rounded-md py-1.5")}
+                className={cn("rounded-md py-1.5 cursor-pointer")}
                 asChild={menu?.href ? true : false}
                 key={key}
+                onClick={() =>
+                  menu?.href ? {} : menu.onClick && menu.onClick()
+                }
               >
                 {menu?.href ? (
                   <Link

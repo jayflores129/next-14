@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/i18n";
 import MainLayout from "@/components/layouts";
 
 export default async function Page({
-  params: { lng },
+  params: { lng, ...params },
 }: {
   params: { lng: any };
 }) {

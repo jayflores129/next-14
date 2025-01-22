@@ -1,6 +1,13 @@
 "use client";
 
-import { ChevronsUpDown, Languages, Menu, Plus, SunMoon } from "lucide-react";
+import {
+  ChevronsUpDown,
+  Menu,
+  MoonStar,
+  Plus,
+  Sun,
+  SunMoon,
+} from "lucide-react";
 import MainMenus from "@/components/layouts/main-menus";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -16,6 +23,9 @@ import { Div } from "@/hooks/useSize";
 import { useMemo, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import Language from "./Language";
+import Theme from "./Theme";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const LogoImage = ({
   onClickToggler,
@@ -73,8 +83,22 @@ export default function MainLayout({ title, children }: MainLayout) {
     return style;
   }, [sidebarWidth, sidebarOpen, wrapperSize?.width]);
 
+  const companyTriggerSelector = (
+    <button
+      className={cn(
+        "hover:bg-xxhover flex items-center gap-1 px-2 py-1 rounded-full border border-xxborder data-[state=open]:bg-xxmenuHover",
+        session?.user?.user_access?.length == 0 && "cursor-default"
+      )}
+    >
+      <span>{session?.user?.company_name}</span>
+      {session?.user?.user_access?.length > 0 && (
+        <ChevronsUpDown width={14} height={14} strokeWidth={1} />
+      )}
+    </button>
+  );
+
   return (
-    <>
+    <ThemeProvider>
       <Sheet onOpenChange={setSidebarSheet} open={sidebarSheet}>
         <SheetContent
           className="w-[250px] bg-xxsurface dark:bg-xxsurface p-0 border-0"
@@ -86,7 +110,9 @@ export default function MainLayout({ title, children }: MainLayout) {
               onClickToggler={() => setSidebarSheet(false)}
               className="h-[var(--header-height)]"
             />
-            <MainMenus />
+            <ScrollArea className="h-[calc(100vh-var(--header-height))]">
+              <MainMenus />
+            </ScrollArea>
           </div>
         </SheetContent>
       </Sheet>
@@ -101,29 +127,40 @@ export default function MainLayout({ title, children }: MainLayout) {
 
           {status === "authenticated" && (
             <div className="flex h-full items-center px-2 ms-auto pe-4 gap-2">
-              {status === "authenticated" && (
+              {session?.user?.user_access?.length > 0 ? (
                 <DropdownMenu
                   menus={session?.user?.user_access?.map((acc: any) => ({
                     text: acc.company_name,
                   }))}
-                  trigger={
-                    <button className="hover:bg-xxhover flex items-center gap-1 px-2 py-1 rounded-md border border-xxborder">
-                      <span>{session?.user?.company_name}</span>
-                      <ChevronsUpDown width={14} height={14} strokeWidth={1} />
-                    </button>
-                  }
-                  align="start"
+                  trigger={companyTriggerSelector}
+                  align="end"
                 />
+              ) : (
+                companyTriggerSelector
               )}
-              <button className="border border-xxborder h-[35px] w-[35px] flex items-center justify-center rounded-full">
-                <Plus width={20} height={20} />
-              </button>
-              <button className="border border-xxborder h-[35px] w-[35px] flex items-center justify-center rounded-full">
-                <Languages width={18} height={18} />
-              </button>
-              <button className="border border-xxborder h-[35px] w-[35px] flex items-center justify-center rounded-full">
-                <SunMoon width={18} height={18} />
-              </button>
+
+              <DropdownMenu
+                menus={[
+                  "Offer",
+                  "Order Confirmation",
+                  "Delivery Note",
+                  "Invoices",
+                  "Credit Notes",
+                  "Shipping List",
+                ]?.map((text: any) => ({
+                  text,
+                }))}
+                trigger={
+                  <button className="border border-xxborder hover:bg-xxmenuHover h-[35px] w-[35px] flex items-center justify-center rounded-full data-[state=open]:bg-xxmenuHover">
+                    <Plus width={20} height={20} />
+                  </button>
+                }
+                align="end"
+              />
+
+              <Language />
+              <Theme />
+
               <Popover>
                 <PopoverTrigger asChild>
                   <button className="border border-xxborder h-[35px] w-[35px] flex items-center justify-center rounded-full">
@@ -143,7 +180,7 @@ export default function MainLayout({ title, children }: MainLayout) {
             </div>
           )}
         </header>
-        <div className="flex">
+        <div className="flex relative h-[calc(100vh-var(--header-height))]">
           {wrapperSize?.width > 1300 && (
             <ScrollArea
               className="h-[calc(100vh-var(--header-height))] overflow-auto thin-scroll transition-transform duration-200"
@@ -158,7 +195,7 @@ export default function MainLayout({ title, children }: MainLayout) {
             </ScrollArea>
           )}
           <main
-            className="overflow-hidden rounded-tl-lg transition-[margin] duration-200"
+            className="overflow-hidden rounded-tl-lg transition-all duration-200 absolute right-0 bottom-0 top-0"
             style={mainElemStyle}
           >
             <div className="bg-xxbackground h-[calc(100vh-var(--header-height))] overflow-y-scroll thin-scroll flex flex-col shadow">
@@ -172,6 +209,6 @@ export default function MainLayout({ title, children }: MainLayout) {
           </main>
         </div>
       </Div>
-    </>
+    </ThemeProvider>
   );
 }
