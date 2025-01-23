@@ -19,11 +19,13 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import useSWR from "swr";
 
 import FilterButton from "./FilterButton";
 import { iconStrokeWidth } from "@/lib/utils";
+import { Div } from "@/hooks/useSize";
+import { FilterContext } from "@/context/FilterContext";
 
 const address = (row: any) => {
   let rows = [
@@ -42,13 +44,14 @@ const orderBy = ["DESC", "ASC"].map((text: any) => ({
   id: text,
 }));
 
-export default function List() {
+export default function List({ filter }: { filter: any }) {
   const { data: session }: any = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const { t } = useTranslation();
+  const wrapperSize: any = useContext(Div.Context);
 
   const sortBy = useMemo(() => {
     return [
@@ -144,7 +147,7 @@ export default function List() {
   };
 
   return (
-    <>
+    <FilterContext.Provider value={filter}>
       <div className="flex items-center justify-between px-3 mb-3">
         <div>
           <Input
@@ -211,62 +214,76 @@ export default function List() {
         </THead>
         <TBody>
           {Array.isArray(data?.projects) &&
-            data.projects.map((proj: any, key: number) => (
-              <tr
-                key={key}
-                className="border-b border-xxtableBorder hover:bg-xxtableHover"
-              >
-                <TD className="text-blue-700 font-medium ps-4">
+            data.projects.map((proj: any, key: number) => {
+              const number = (
+                <span className="text-blue-700 font-medium">
                   {proj.project_number}
-                </TD>
-                <TD>
-                  <div className="flex flex-col gap-1">
-                    <span className="font-medium">{proj.cms_name}</span>
-                    <span title={address(proj)}>{address(proj)}</span>
-                  </div>
-                </TD>
-                <TD className="font-medium">{proj.project_name}</TD>
-                <TD>{proj.project_man_power}</TD>
-                <TD>{proj.added_date}</TD>
-                <TD>{proj.project_start_date}</TD>
-                <TD>{proj.project_end_date}</TD>
-                <TD>{proj.project_delivery_date}</TD>
-                <TD>
-                  {proj.user_firstname} {proj.user_lastname}
-                </TD>
-                <TD>
-                  <StatusChip status={proj.project_status} />
-                </TD>
-                <TD className="pe-4 text-right">
-                  <DropdownMenu
-                    menus={[
-                      {
-                        text: t("View"),
-                        Icon: ArrowRight,
-                        href: "https://hotware.app/projects",
-                        target: "_blank",
-                      },
-                      null,
-                      {
-                        text: t("Update"),
-                        Icon: Pencil,
-                        href: "/",
-                      },
-                      {
-                        text: t("CreateShippingList"),
-                        Icon: FileChartPie,
-                        href: "/",
-                      },
-                      {
-                        text: t("ChangeStatus"),
-                        Icon: ArrowRightLeft,
-                        href: "/",
-                      },
-                    ]}
-                  />
-                </TD>
-              </tr>
-            ))}
+                </span>
+              );
+              const name = (
+                <span className="font-medium">{proj.project_name}</span>
+              );
+              const cms = (
+                <div className="flex flex-col gap-1">
+                  <span className="font-medium">{proj.cms_name}</span>
+                  <span title={address(proj)}>{address(proj)}</span>
+                </div>
+              );
+              const manpower = proj.project_man_power;
+              const addedDate = proj.added_date;
+              const startDate = proj.project_start_date;
+              const endDate = proj.project_end_date;
+              const deliveryDate = proj.project_delivery_date;
+              const addedBy = `${proj.user_firstname} ${proj.user_lastname}`;
+              const status = <StatusChip status={proj.project_status} />;
+              const actions = (
+                <DropdownMenu
+                  menus={[
+                    {
+                      text: t("View"),
+                      Icon: ArrowRight,
+                      href: "https://hotware.app/projects",
+                      target: "_blank",
+                    },
+                    null,
+                    {
+                      text: t("Update"),
+                      Icon: Pencil,
+                      href: "/",
+                    },
+                    {
+                      text: t("CreateShippingList"),
+                      Icon: FileChartPie,
+                      href: "/",
+                    },
+                    {
+                      text: t("ChangeStatus"),
+                      Icon: ArrowRightLeft,
+                      href: "/",
+                    },
+                  ]}
+                />
+              );
+
+              return (
+                <tr
+                  key={key}
+                  className="border-b border-xxtableBorder hover:bg-xxtableHover"
+                >
+                  <TD className="ps-4">{number}</TD>
+                  <TD>{cms}</TD>
+                  <TD>{name}</TD>
+                  <TD>{manpower}</TD>
+                  <TD>{addedDate}</TD>
+                  <TD>{startDate}</TD>
+                  <TD>{endDate}</TD>
+                  <TD>{deliveryDate}</TD>
+                  <TD>{addedBy}</TD>
+                  <TD>{status}</TD>
+                  <TD className="pe-4 text-right">{actions}</TD>
+                </tr>
+              );
+            })}
         </TBody>
       </Table>
       <div className="flex items-center justify-between ps-4 py-2 mt-auto">
@@ -279,6 +296,6 @@ export default function List() {
           currPage={payload.page}
         />
       </div>
-    </>
+    </FilterContext.Provider>
   );
 }

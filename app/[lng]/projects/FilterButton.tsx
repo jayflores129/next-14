@@ -13,8 +13,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useFilter } from "@/context/FilterContext";
 import { ACTIVE, CANCELLED, CLOSED, iconStrokeWidth } from "@/lib/utils";
 import { ListFilter } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const statusOptions = [ACTIVE, CANCELLED, CLOSED].map((text: any) => ({
   text: <span className="capitalize">{text}</span>,
@@ -23,6 +26,43 @@ const statusOptions = [ACTIVE, CANCELLED, CLOSED].map((text: any) => ({
 
 export default function FilterButton() {
   const { t } = useTranslation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const filter_project_type = useFilter("project_type");
+  const filter_company = useFilter("company");
+  const filter_cms_industry = useFilter("cms_industry");
+
+  const [filterPayload, setFilterPayload] = useState<any>({
+    to: searchParams.get("to") || "",
+    from: searchParams.get("from") || "",
+    start: searchParams.get("start") || "",
+    end: searchParams.get("end") || "",
+  });
+
+  const [project_type, set_project_type] = useState<any>(filter_project_type);
+  const [company, set_company] = useState<any>(filter_company);
+  const [cms_industry, set_cms_industry] = useState<any>(filter_cms_industry);
+
+  const onChangeInput = (type: any, value: any) => {
+    setFilterPayload((prev: any) => ({ ...prev, [type]: value }));
+  };
+
+  const onFilter = () => {
+    const _searchParams = new URLSearchParams(searchParams);
+
+    for (const key in filterPayload) {
+      if (filterPayload[key]) {
+        _searchParams.set(key, filterPayload[key]);
+      } else {
+        _searchParams.delete(key);
+      }
+    }
+
+    router.push(`${pathname}?${_searchParams.toString()}`);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -39,8 +79,18 @@ export default function FilterButton() {
         <div className="flex flex-col gap-1">
           <p className="font-medium">{t("DateAdded")} (From - To)</p>
           <div className="flex items-center gap-2">
-            <Input type="date" className="w-1/2 block" />
-            <Input type="date" className="w-1/2 block" />
+            <Input
+              type="date"
+              className="w-1/2 block"
+              value={filterPayload?.from || ""}
+              onChange={(e) => onChangeInput("from", e.target.value)}
+            />
+            <Input
+              type="date"
+              className="w-1/2 block"
+              value={filterPayload?.to || ""}
+              onChange={(e) => onChangeInput("to", e.target.value)}
+            />
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -48,33 +98,72 @@ export default function FilterButton() {
             {t("StartDate")} - {t("EndDate")}
           </p>
           <div className="flex items-center gap-2">
-            <Input type="date" className="w-1/2 block" />
-            <Input type="date" className="w-1/2 block" />
+            <Input
+              type="date"
+              className="w-1/2 block"
+              value={filterPayload?.start || ""}
+              onChange={(e) => onChangeInput("start", e.target.value)}
+            />
+            <Input
+              type="date"
+              className="w-1/2 block"
+              value={filterPayload?.end || ""}
+              onChange={(e) => onChangeInput("end", e.target.value)}
+            />
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <p className="font-medium">{t("Company")}</p>
-          <ApiCombobox uri="company" modal />
+          <ApiCombobox
+            uri="company"
+            modal
+            value={company}
+            onChangeItem={(item) => {
+              set_company(item);
+              onChangeInput("company", item.id);
+            }}
+          />
         </div>
         <div className="flex flex-col gap-1">
           <p className="font-medium">{t("ProjectType")}</p>
-          <ApiCombobox uri="project_type" modal />
+          <ApiCombobox
+            uri="project_type"
+            modal
+            value={project_type}
+            onChangeItem={(item) => {
+              set_project_type(item);
+              onChangeInput("type", item.id);
+            }}
+          />
         </div>
         <div className="flex flex-col gap-1">
           <p className="font-medium">{t("Industry")}</p>
-          <ApiCombobox uri="cms_industry" modal />
+          <ApiCombobox
+            uri="cms_industry"
+            modal
+            value={cms_industry}
+            onChangeItem={(item) => {
+              set_cms_industry(item);
+              onChangeInput("industry_id", item.id);
+            }}
+          />
         </div>
 
         <div className="flex flex-col gap-1">
           <p className="font-medium">{t("Status")}</p>
-          <AppCombobox options={statusOptions} />
+          <AppCombobox
+            options={statusOptions}
+            onChangeItem={(item) => onChangeInput("status", item.id)}
+          />
         </div>
 
         <DialogFooter>
           <Button type="button" variant={"outline"}>
             {t("Cancel")}
           </Button>
-          <Button type="button">{t("Filter")}</Button>
+          <Button type="button" onClick={onFilter}>
+            {t("Filter")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

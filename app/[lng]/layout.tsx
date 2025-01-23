@@ -4,6 +4,8 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { languages } from "../i18n/settings";
 import { cookies } from "next/headers";
+import Head from "next/head";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,10 +41,72 @@ export default function RootLayout({
 
   return (
     <html lang={lng}>
+      <Head>
+        <meta name="application-name" content="Hotware" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover maximum-scale=1"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta name="apple-mobile-web-app-title" content="Hotware" />
+        <meta
+          name="description"
+          content="Hotwork International is your best solution partner for refractory dry outs, refractory heat ups, furnace drainings and combustion technology."
+        />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-config" content="none" />
+        <meta name="msapplication-TileColor" content="#2B5797" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" sizes="32x32" href="/favicon.ico" />
+        <link rel="icon" sizes="16x16" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
+        <link
+          rel="mask-icon"
+          href="/icons/safari-pinned-tab.svg"
+          color="#5bbad5"
+        />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=optional"
+        />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:url" content="https://hotware.vercel.app" />
+        <meta name="twitter:title" content="Hotware" />
+        <meta
+          name="twitter:description"
+          content="Hotwork International is your best solution partner for refractory dry outs, refractory heat ups, furnace drainings and combustion technology."
+        />
+        <meta
+          name="twitter:image"
+          content="https://hotware.vercel.app/icons/hotware-logo-192x192.png"
+        />
+        <meta name="twitter:creator" content="@DavidWShadow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Hotware" />
+        <meta
+          property="og:description"
+          content="Hotwork International is your best solution partner for refractory dry outs, refractory heat ups, furnace drainings and combustion technology."
+        />
+        <meta property="og:site_name" content="Hotware" />
+        <meta property="og:url" content="https://hotware.vercel.app" />
+        <meta
+          property="og:image"
+          content="https://hotware.vercel.app/icons/apple-touch-icon.png"
+        />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${themeValue} bg-xxsurface antialiased`}
       >
         <SessionProvider>{children}</SessionProvider>
+        <Toaster />
       </body>
     </html>
   );

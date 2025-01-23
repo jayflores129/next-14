@@ -39,6 +39,8 @@ import {
   Users,
   Warehouse,
 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 
 const iconProps = {
   width: 16,
@@ -55,6 +57,11 @@ const subIconProps = {
 
 export default function MainMenus() {
   const { t } = useTranslation();
+  const pathname = usePathname();
+
+  const pathName = useMemo(() => {
+    return `/${pathname.split("/")[2]}`;
+  }, [pathname]);
 
   const dashboard = {
     name: t("Dashboard"),
@@ -338,8 +345,93 @@ export default function MainMenus() {
     settings,
   ];
 
+  const accordionValueLevel1 = useMemo(() => {
+    if (
+      pathName?.includes("/projects") ||
+      pathName?.includes("/projects/offers") ||
+      pathName?.includes("/projects/order-confirmation") ||
+      pathName?.includes("/projects/delivery-note") ||
+      pathName?.includes("/projects/invoices") ||
+      pathName?.includes("/projects/credit-note") ||
+      pathName?.includes("/projects/loading") ||
+      pathName?.includes("/projects/loading/template") ||
+      pathName?.includes("/projects/shipping-list") ||
+      pathName?.includes("/projects/technician-view/technician-projects") ||
+      pathName?.includes("/projects/technician-view/technician-tasks") ||
+      pathName?.includes("/projects/technician-view/technician-tasks")
+    ) {
+      return ["project"];
+    }
+
+    if (
+      pathName?.includes("/address-manager") ||
+      pathName?.includes("/address-manager/un-assigned-reports")
+    ) {
+      return ["address_manager"];
+    }
+
+    if (
+      pathName?.includes("/documents") ||
+      pathName?.includes("/documents/company") ||
+      pathName?.includes("/documents/employees") ||
+      pathName?.includes("/documents/equipment") ||
+      pathName?.includes("/documents/personal")
+    ) {
+      return ["document"];
+    }
+
+    if (pathName?.includes("/items") || pathName?.includes("/items/set")) {
+      return ["items"];
+    }
+
+    if (
+      pathName?.includes("/admin") ||
+      pathName?.includes("/admin/users") ||
+      pathName?.includes("/admin/company") ||
+      pathName?.includes("/admin/companyletters") ||
+      pathName?.includes("/admin/companyletters/create") ||
+      pathName?.includes("/admin/companyletters/letter-category") ||
+      pathName?.includes("/admin/warehouse") ||
+      pathName?.includes("/admin/leave") ||
+      pathName?.includes("/admin/cars") ||
+      pathName?.includes("/admin/calculations/pipe-sizing")
+    ) {
+      return ["admin"];
+    }
+
+    return [];
+  }, [pathName]);
+
+  const accordionValueLevel2 = useMemo(() => {
+    if (
+      pathName?.includes("/projects/loading") ||
+      pathName?.includes("/projects/loading/template")
+    ) {
+      return "project_loading_list";
+    }
+
+    if (
+      pathName?.includes("/admin/company") ||
+      pathName?.includes("/admin/companyletters") ||
+      pathName?.includes("/admin/companyletters/create") ||
+      pathName?.includes("/admin/companyletters/letter-category")
+    ) {
+      return "admin_company";
+    }
+
+    if (pathName === "/admin/calculations/pipe-sizing") {
+      return "calculation";
+    }
+
+    return "";
+  }, [pathName]);
+
   return (
-    <Accordion type="multiple" className="p-2 flex flex-col gap-1 text-sm">
+    <Accordion
+      type="multiple"
+      className="p-2 flex flex-col gap-1 text-sm"
+      defaultValue={accordionValueLevel1}
+    >
       {Array.isArray(links) &&
         links.map((link: any, key: number) => {
           if (Array.isArray(link.subs) && link.subs.length > 0) {
@@ -365,6 +457,7 @@ export default function MainMenus() {
                             collapsible
                             className="p-0 flex flex-col gap-1"
                             key={subKey}
+                            defaultValue={accordionValueLevel2}
                           >
                             <AccordionItem
                               value={subLink.value}
